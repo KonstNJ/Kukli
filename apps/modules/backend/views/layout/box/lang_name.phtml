@@ -1,0 +1,35 @@
+<?php
+echo '<label class="form-label">'.$local->_('label_name').'</label>';
+if(!empty($langs))
+{
+    $lang_names = [];
+    if(!empty($data['name']))
+    {
+        $lang_names = json_decode($data['name'], true);
+    }
+    echo '<div class="accordion" id="langsNames">';
+    $show_lang_item = 'show';
+    $collapsed_item = '';
+    foreach (new \ArrayIterator($langs) as $lang)
+    {
+        $item = 'lang-'.$lang['code'];
+        $set_val = $lang_names[$lang['code']] ?? '';
+        echo '<div class="accordion-item">';
+        echo '  <h2 class="accordion-header" id="'.$item.'">';
+        echo '      <button class="accordion-button '.$collapsed_item.'" type="button" data-coreui-toggle="collapse" data-coreui-target="#'.$item.'-collapseLang" aria-expanded="true" aria-controls="'.$item.'-collapseLang">';
+        echo '          '.$lang['name'];
+        echo '      </button>';
+        echo '  </h2>';
+        echo '  <div id="'.$item.'-collapseLang" class="accordion-collapse collapse '.$show_lang_item.'" aria-labelledby="'.$item.'">';
+        echo '      <div class="accordion-body">';
+        echo '          <input type="text" id="input-'.$item.'" data-code="'.$lang['code'].'" name="name['.$lang['code'].']" value="'. $set_val .'" class="form-control" required />';
+        echo '      </div>';
+        echo '  </div>';
+        echo '</div>';
+        $show_lang_item = '';
+        $collapsed_item = 'collapsed';
+    }
+    echo '</div>';
+}
+?>
+

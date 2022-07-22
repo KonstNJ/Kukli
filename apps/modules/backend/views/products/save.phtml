@@ -1,0 +1,96 @@
+<?php
+echo $this->partial('layout/component/modules_nav_header');
+$data_content = [];
+if(!empty($data['content']))
+{
+    $data_content = json_decode($data['content'], true);
+}
+?>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <form action="<?=$curr_url;?>/save" method="post" enctype="multipart/form-data" id="editForm" class="row g-3">
+                <input type="hidden" name="id" value="<?=$data['id'] ?? ''; ?>">
+                <div class="col-md-9">
+                    <?php
+                    if(!empty($langs))
+                    {
+                        $active_tab = 'active';
+                        echo '<ul class="nav nav-tabs" id="contentTab" role="tablist">';
+                        foreach (new \ArrayIterator($langs) as $lang)
+                        {
+                            $tab_id = 'lang-'.$lang['code'];
+                            echo '<li class="nav-item" role="presentation">';
+                            echo '  <button class="nav-link '.$active_tab.'" id="'.$tab_id.'-tab" data-coreui-toggle="tab" data-coreui-target="#'.$tab_id.'" type="button" role="tab" aria-controls="'.$tab_id.'" aria-selected="true">'.$lang['name']. ' &#8212 ' .$lang['code'].'</button>';
+                            echo '</li>';
+                            $active_tab = '';
+                        }
+                        echo '</ul>';
+                        $active_tab = 'show active';
+                        echo '<div class="tab-content" id="newsTabContent">';
+                        foreach (new \ArrayIterator($langs) as $lang)
+                        {
+                            $tab_id = 'lang-'.$lang['code'];
+                            $set_name = $data_content[$lang['code']]['name'] ?? '';
+                            $set_about = $data_content[$lang['code']]['about'] ?? '';
+                            $set_content = $data_content[$lang['code']]['content'] ?? '';
+                            $data_item = 'newsLang-'.$lang['code'];
+                            echo '<div class="tab-pane fade '.$active_tab.'" id="'.$tab_id.'" role="tabpanel" aria-labelledby="'.$tab_id.'tab">';
+                            echo '  <div class="mb-3">';
+                            echo '      <label for="'.$data_item.'-name" class="form-label">'.$local->_('label_name').'</label>';
+                            echo '      <input type="text" name="content['.$lang['code'].'][name]" class="form-control" min="10" maxlength="255" id="'.$data_item.'-name" value="'.$set_name.'" />';
+                            echo '  </div>';
+                            echo '  <div class="mb-3">';
+                            echo '      <label for="'.$data_item.'-about" class="form-label">'.$local->_('label_content').'</label>';
+                            echo '      <textarea class="form-control" name="content['.$lang['code'].'][about]" id="'.$data_item.'-about" rows="3">'.$set_about.'</textarea>';
+                            echo '  </div>';
+                            echo '  <div class="mb-3">';
+                            echo '      <label for="'.$data_item.'-content" class="form-label">'.$local->_('label_content').'</label>';
+                            echo '      <textarea class="form-control" name="content['.$lang['code'].'][content]" id="'.$data_item.'-content" rows="3">'.$set_content.'</textarea>';
+                            echo '  </div>';
+                            echo '</div>';
+                            $active_tab = '';
+                        }
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <?=$this->partial("layout/box/active_check");?>
+                        </div>
+                        <div class="col-12 mb-4 mt-2">
+                            <?php
+                            if(!empty($categories))
+                            {
+                                foreach ($categories as $cat_key => $cat_items)
+                                {
+                                    echo $this->partial("layout/box/select_lists", ['mod_name'=>$cat_key, 'cat_lists'=>$cat_items]);
+                                }
+                            }
+                            ?>
+                        </div>
+                        <div class="col-12">
+                            <?=$this->partial("layout/component/pictureBox");?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php
+echo $this->partial("layout/component/wysiwygBlocks");
+?>
+<script>
+    <?php
+    if(!empty($langs))
+    {
+        foreach (new \ArrayIterator($langs) as $lang)
+        {
+            echo "createEditor('#newsLang-".$lang['code']."-content');";
+        }
+    }
+    ?>
+</script>

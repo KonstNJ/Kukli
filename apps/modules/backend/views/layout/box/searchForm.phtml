@@ -1,0 +1,12 @@
+<div class="flex-fill px-4">
+    <form method="get" enctype="multipart/form-data">
+        <div class="input-group flex-nowrap">
+            <input class="form-control" type="text" name="s" placeholder="Найти" aria-label="Найти" value="<?=(!empty($search_param) && !is_null($search_param)) ? $search_param : ''; ?>">
+            <button type="submit" class="me-2 btn btn-primary text-white input-group-text" title="Найти">
+                <svg class="icon me-2">
+                    <use xlink:href="/assets/icons/sprites/free.svg#cil-search"></use>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>

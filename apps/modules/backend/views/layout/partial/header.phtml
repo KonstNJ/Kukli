@@ -1,0 +1,118 @@
+<header class="header header-sticky mb-4" style="z-index: 1031;">
+    <div class="container-fluid">
+        <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+            <svg class="icon icon-lg">
+                <use xlink:href="/assets/icons/sprites/free.svg#cil-menu"></use>
+            </svg>
+        </button><a class="header-brand d-md-none" href="#">
+            <svg width="118" height="46" alt="Etukk.ru">
+                <use xlink:href=/assets/brand/coreui.svg#full"></use>
+            </svg></a>
+        <ul class="header-nav d-none d-md-flex">
+            <li class="nav-item"><a class="nav-link" href="<?=$admin_panel_uri;?>">Главная панель</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?=$admin_panel_uri;?>/users">Пользователи</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?=$admin_panel_uri;?>/commission_rates">Комиссионные ставки</a></li>
+        </ul>
+        <ul class="header-nav ms-auto">
+            <li class="nav-item dropdown d-md-down-none">
+                <!--<a class="nav-link" href="<?/*=$admin_panel_uri;*/?>/personal/notifications" title="Уведомления">-->
+                <a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon icon-lg">
+                        <use xlink:href="/assets/icons/sprites/free.svg#cil-bell"></use>
+                    </svg>
+                    <span class="badge rounded-pill position-absolute top-0 end-0 bg-danger-gradient">5</span>
+                </a>
+                <?=$this->partial('layout/box/notifications');?>
+            </li>
+            <li class="nav-item dropdown d-md-down-none">
+                <!--<a class="nav-link" href="<?/*=$admin_panel_uri;*/?>/personal/messages" title="Сообщения">-->
+                <a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon icon-lg">
+                        <use xlink:href="/assets/icons/sprites/free.svg#cil-envelope-open"></use>
+                    </svg>
+                    <span class="badge rounded-pill position-absolute top-0 end-0 bg-info-gradient">7</span>
+                </a>
+                <?=$this->partial('layout/box/messages');?>
+            </li>
+        </ul>
+        <ul class="header-nav ms-3">
+            <li class="nav-item dropdown">
+                <a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <div class="avatar avatar-md">
+                        <?php
+                        $avatar = '/assets/icons/icon-avatar.svg';
+                        if(!empty($users_info) && !empty($users_info['pricture']))
+                        {
+                            $avatar = $users_info['pricture'].'.jpg';
+                        }
+                        ?>
+                        <img class="avatar-img" src="<?=$avatar;?>">
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end pt-0">
+                    <div class="dropdown-header bg-light py-2">
+                        <div class="fw-semibold">Учётная запись</div>
+                    </div>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/messages">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-envelope-open"></use>
+                        </svg> Сообщений
+                    </a>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/comments">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-comment-square"></use>
+                        </svg> Комментарии
+                    </a>
+                    <div class="dropdown-header bg-light py-2">
+                        <div class="fw-semibold">Настройки</div>
+                    </div>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/about">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-user"></use>
+                        </svg> Профиль
+                    </a>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/settings">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-settings"></use>
+                        </svg> Настройки
+                    </a>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/payments">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-credit-card"></use>
+                        </svg> Оплаты
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?=$admin_panel_uri;?>/users/logout">
+                        <svg class="icon me-2">
+                            <use xlink:href="/assets/icons/sprites/free.svg#cil-account-logout"></use>
+                        </svg> Выйти</a>
+                </div>
+            </li>
+        </ul>
+
+        <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#aside')).show()">
+            <svg class="icon icon-lg">
+                <use xlink:href="/assets/icons/sprites/free.svg#cil-applications-settings"></use>
+            </svg>
+        </button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb my-0 ms-2">
+                <li class="breadcrumb-item">
+                    <a hre="<?=$admin_panel_uri;?>"><span>Главная панель</span></a>
+                </li>
+                <?php
+                if(!empty($current_module) && $current_module!=='index')
+                {
+                    //echo '<li class="breadcrumb-item active"><span>'.$modules[$current_module].'</span></li>';
+                }
+                //var_dump($current_module);
+                //var_dump($modules[$current_module]);
+                ?>
+
+            </ol>
+        </nav>
+    </div>
+</header>

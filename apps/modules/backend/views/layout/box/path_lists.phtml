@@ -1,0 +1,27 @@
+<label class="form-label"><?=$local->_('label_parent');?></label>
+<select class="form-select" name="parent">
+    <option></option>
+
+    <?php
+    if(!empty($path_lists))
+    {
+        foreach (new \ArrayIterator($path_lists) as $item)
+        {
+            $selected = '';
+            $disabled = '';
+            if(!empty($data['id']))
+            {
+                if($data['id'] == $item['id'])
+                {
+                    $disabled = 'disabled';
+                }
+                if($data['parent'] == $item['id'])
+                {
+                    $selected = 'selected';
+                }
+            }
+            echo '<option value="'.$item['id'].'" '.$selected.' '.$disabled.'>'.str_repeat('&nbsp;&nbsp;', $item['level']).$item['name'].'</option>';
+        }
+    }
+    ?>
+</select>

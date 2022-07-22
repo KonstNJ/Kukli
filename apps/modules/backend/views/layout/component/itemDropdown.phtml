@@ -1,0 +1,27 @@
+<?php
+
+$initDropdown = function($item) use($modules, $current_module, $curr_url, $local) {
+    $result = '';
+    if(!empty($modules[$current_module]) && count($modules[$current_module]) > 1)
+    {
+        $result .= '<div class="dropdown">';
+        $result .= '     <button class="btn btn-transparent p-0" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+        $result .= '         <svg class="icon">';
+        $result .= '             <use xlink:href="/assets/icons/sprites/free.svg#cil-options"></use>';
+        $result .= '         </svg>';
+        $result .= '     </button>';
+        $result .= '     <div class="dropdown-menu dropdown-menu-end">';
+        foreach (new \ArrayIterator($modules[$current_module]) as $control)
+        {
+            if($control!=='view')
+            {
+                $del_danger = ($control=='delete') ? 'text-danger' : '';
+                $url = implode('/', [$curr_url, $control, $item]);
+                $result .= '<a class="dropdown-item '.$del_danger.'" href="'.$url.'">'.$local->_($control).'</a>';
+            }
+        }
+        $result .= '     </div>';
+        $result .= '</div>';
+    }
+    return $result;
+};

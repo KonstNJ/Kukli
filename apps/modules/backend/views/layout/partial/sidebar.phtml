@@ -1,0 +1,59 @@
+<div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+        <a href="/">
+            <img src="/assets/icons/logo.svg" class="sidebar-brand-full" width="118" height="46" />
+        </a>
+    </div>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+        <li class="nav-item"><a class="nav-link" href="<?=$admin_panel_uri;?>">
+                <svg class="nav-icon">
+                    <use xlink:href="/assets/icons/sprites/free.svg#cil-speedometer"></use>
+                </svg> <?=$local->_('dashboard');?></a></li>
+        <?php
+        if(!empty($sidebar))
+        {
+            $modules_sidebar = (new \ArrayIterator($modules));
+            foreach ((new \ArrayIterator($sidebar)) as $key_side => $side)
+            {
+                echo '<li class="nav-title">'. $local->_($key_side) .'</li>';
+
+                foreach ($side as $side_item)
+                {
+                    $group_show = '';
+                    if(in_array($current_module, $side_item['items']))
+                    {
+                        $group_show = 'aria-expanded="true"';
+                    }
+                    echo '<li class="nav-group" '.$group_show.'>';
+                    echo '  <a class="nav-link nav-group-toggle" href="#">';
+                    echo '      <svg class="nav-icon">
+                                <use xlink:href="/assets/icons/sprites/free.svg#'.$side_item['icon'].'"></use>
+                            </svg> '. $local->_($side_item['title']) ;
+                    echo '  </a>';
+                    echo '  <ul class="nav-group-items">';
+                    foreach ($side_item['items'] as $side_key)
+                    {
+                        if(!empty($modules[$side_key]))
+                        {
+                            $active_item = '';
+                            if($side_key==$current_module)
+                            {
+                                $active_item = 'active';
+                            }
+                            $url = $admin_panel_uri . '/' . $side_key;
+                            echo '<li class="nav-item">';
+                            echo '  <a class="nav-link '.$active_item.'" href="'.$url.'">';
+                            echo '      <span class="nav-icon"></span>';
+                            echo        $local->_($side_key);
+                            echo '  </a>';
+                            echo '</li>';
+                        }
+                    }
+                    echo '  </ul>';
+                    echo '</li>';
+                }
+            }
+        }
+        ?>
+    </ul>
+</div>

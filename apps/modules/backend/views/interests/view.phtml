@@ -1,0 +1,41 @@
+<?php
+echo $this->partial('layout/component/itemDropdown');
+echo $this->partial('layout/component/modules_nav_header');
+?>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <?php
+            if(!empty($data->total_count) && $data->total_count > 0)
+            {
+                echo '<table class="table table-hover mb-0 w-100">';
+                echo '  <tbody>';
+                foreach ($data->items as $item)
+                {
+                    echo '<tr class="align-middle">';
+                    echo '  <td><input type="checkbox" class="form-check-input mt-2 itemCheck" name="items[]" value="'.$item['id'].'" /></td>';
+                    echo '          <td>';
+                    if(!is_null($item['picture']))
+                    {
+                        echo '<picture class="rounded float-start">';
+                        echo '  <source srcset="'.$item['picture'].'.webp" />';
+                        echo '  <img src="'.$item['picture'].'.jpg" class="prev_picture" />';
+                        echo '</picture>';
+                    }
+                    echo '          </td>';
+                    echo '  <td class="w-100">';
+                    echo '      <div class="d-flex justify-content-between">';
+                    echo '        <div>'.$item['name'].'</div>';
+                    echo '      </div>';
+                    echo '  </td>';
+                    echo '  <td>'.$initDropdown($item['id']).'</td>';
+                    echo '</tr>';
+                }
+                echo '  </tbody>';
+                echo '</table>';
+            }
+            ?>
+        </div>
+        <div><?=$this->partial("layout/component/paginate");?></div>
+    </div>
+</div>

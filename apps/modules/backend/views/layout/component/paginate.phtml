@@ -1,0 +1,77 @@
+<?php
+if(!empty($data->total_count) && $data->total_count > $data->limit)
+{
+    $query = $this->request->getQuery();
+    $url = $query['_url'];
+    $param = [];
+    if(!empty($query))
+    {
+        foreach ($query as $par=>$value)
+        {
+            if(!in_array($par, ['_url', 'current']))
+            {
+                $param[$par] = $value;
+            }
+        }
+    }
+    $pagination = 10;
+    if($data->total_count > 0)
+    {
+        $nav_item = ceil($pagination / 2);
+        $current = $data->current;
+        $first = $current - $nav_item;
+        $last = $current + $nav_item;
+
+        if($first<=0)
+        {
+            $first = 1;
+            $last = $pagination;
+        }
+        if($last >= $data->last)
+        {
+            $last = $data->last;
+        }
+        echo '<div class="tab-pane p-3 active preview justify-content-center" role="toolbar">';
+        echo '  <nav aria-label="pagination_nav">';
+        echo '      <ul class="pagination">';
+                        if(($current - $nav_item) > 1)
+                        {
+                            $cur_url = $url;
+                            if(!empty($param))
+                            {
+                                $cur_url = $url.'?'.http_build_query($param);
+                            }
+                            echo '  <li class="page-item"><a href="'.$cur_url.'" class="page-link"><span aria-hidden="true">«</span></a></li>';
+                        }
+
+                        for ($i=$first; $i<=$last; $i++)
+                        {
+                            $active = ($i==$current) ? ' active' : '';
+                            $cur_url = $url;
+                            if($i > $data->first)
+                            {
+                                $param['current'] = $i;
+                                $cur_url = $url.'?'.http_build_query($param);
+                            } else {
+                                if(!empty($param))
+                                {
+                                    $cur_url = $url.'?'.http_build_query($param);
+                                }
+                            }
+                            echo '<li class="page-item '.$active.'"><a href="'.$cur_url.'" class="page-link">'.$i.'</a></li>';
+                        }
+
+                        if(($data->last - $current) > $nav_item)
+                        {
+                            $param['current'] = $data->last;
+                            echo '  <li class="page-item"><a href="'.$url.'?'.http_build_query($param).'" class="page-link"><span aria-hidden="true">»</span></a></li>';
+
+                        }
+        echo '    </ul>';
+        echo '  </nav>';
+        echo '</div>';
+
+    }
+}
+
+?>

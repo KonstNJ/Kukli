@@ -1,0 +1,25 @@
+<label class="form-label"><?=$local->_('label_'.$mod_name);?></label>
+<select class="form-select" name="<?=$mod_name;?>">
+    <option></option>
+    <?php
+    if(!empty($cat_lists))
+    {
+        foreach (new \ArrayIterator($cat_lists) as $cat)
+        {
+            $levels_str = (!empty($cat['level']))
+                ? str_repeat('&nbsp;&nbsp;', $cat['level'])
+                : '';
+            $selected = '';
+            if(!empty($data['id']) && !empty($data[$mod_name]))
+            {
+                if($data[$mod_name]==$cat['id'])
+                {
+                    $selected = 'selected';
+                }
+            }
+            echo '<option value="'.$cat['id'].'" '.$selected.'>'.$levels_str.$cat['name'].'</option>';
+        }
+    }
+    ?>
+</select>
+<?php

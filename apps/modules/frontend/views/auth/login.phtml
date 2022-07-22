@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Авторизация пользователя</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #ccc;
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+        }
+        .auth_box {
+            width: 400px;
+            height: 300px;
+            background: #fff;
+            overflow: hidden;
+            /*border-radius: 5%;*/
+            box-shadow: rgba(255,255,255,0.72) 0 0 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .auth_box .auth_box_title {
+            padding: 1em;
+            font-size: 1.2rem;
+        }
+        .auth_box .auth_box_form {
+            padding: 20px;
+        }
+        .auth_box .auth_box_footer {
+            display: flex;
+            flex-direction: column;
+            padding: 0 20px;
+            justify-content: end;
+            align-items: end;
+        }
+        .auth_box .auth_box_footer button {
+            padding: 5px 20px;
+            background: #ed1d4a;
+            color: #fff;
+            border: none;
+        }
+        .auth_box .auth_box_footer a{
+            color: #ed1d4a;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        .row input {
+            width: 100%;
+            padding: 10px 5px;
+            font-size: 15px;
+            border: 0.001em solid #3c4b64;
+        }
+    </style>
+</head>
+<body>
+<div class="auth_box">
+    <div class="auth_box_title">Тестовая авторизация пользователя</div>
+    <div class="auth_box_form">
+        <form method="post" id="auth_form_data" action="/users/login" enctype="multipart/form-data">
+            <div class="row">
+                <label>Email</label>
+                <input type="email" name="email" required />
+            </div>
+            <div class="row">
+                <label>Пароль</label>
+                <input type="password" name="password" required />
+            </div>
+        </form>
+    </div>
+    <div class="auth_box_footer">
+        <button type="submit" form="auth_form_data">Войти</button>
+        <a href="/users/registration">Зарегистрироваться</a>
+    </div>
+</div>
+<?php
+var_dump($data);
+?>
+</body>
+</html>

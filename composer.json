@@ -1,0 +1,7 @@
+{
+    "require": {
+        "phalcon/incubator-mailer": "^1.0",
+        "smi2/phpclickhouse": "^1.4",
+        "hybridauth/hybridauth": "^3.8"
+    }
+}

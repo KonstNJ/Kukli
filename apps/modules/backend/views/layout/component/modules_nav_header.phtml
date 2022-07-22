@@ -1,0 +1,68 @@
+
+<header class="header header-sticky mb-4" style="top: 120px;">
+    <div class="container-fluid">
+        <div class="row w-100">
+            <div class="col-mod-12">
+                <div class="d-flex justify-content-between">
+                    <div id="manipulateBtn">
+                        <?php
+                        $icons = [
+                            'active' => 'cil-sun',
+                            'hiden' => 'cil-moon',
+                            'delete' => 'cil-trash',
+                            'unbanned' => 'cil-circle',
+                            'banned' => 'cil-ban',
+                            'closed' => 'cil-mouth-slash',
+                            'delivered' => 'cil-car-alt'
+                        ];
+                        $getBtn = function($val) use ($icons, $local) {
+                            $icon = !empty($icons[$val]) ? $icons[$val] : 'cil-settings';
+                            $result = '<button class="me-2 btn btn-primary text-white" id="'.$val.'Btn" type="button" disabled>
+                                            <svg class="icon me-2">
+                                                <use xlink:href="/assets/icons/sprites/free.svg#'.$icon.'"></use>
+                                            </svg>'.$local->_($val).'
+                                        </button>';
+                            return $result;
+                        };
+                        if(!empty($current_action) && $current_action=='view' && !empty($modules[$current_module]))
+                        {
+                            echo '<input class="form-check-input mt-2 mx-2 me-4" id="checkAllItems" type="checkbox">';
+                            foreach (new \ArrayIterator($modules[$current_module]) as $key)
+                            {
+                                if(!\in_array($key, ['view','save','roles']))
+                                {
+                                    echo $getBtn($key);
+                                }
+                            }
+                        }
+                        ?>
+
+
+                    </div>
+                    <?php
+                    if(!empty($current_action) && $current_action=='view')
+                    {
+                        echo $this->partial('layout/box/searchForm');
+                    }
+                    ?>
+                    <div>
+                        <?php
+                        if(!empty($modules[$current_module]) && in_array('save', $modules[$current_module]))
+                        {
+                            $btn_name = ($current_action=='save') ? 'btn_save' : 'btn_add';
+                            if($current_action=='save')
+                            {
+                                echo ' <button type="submit" form="editForm" class="btn btn-primary text-white">'.$local->_($btn_name).'</button>';
+                                echo ' <a href="'.$curr_url.'" class="btn btn-light">'.$local->_('btn_cancel').'</a>';
+                            } else {
+                                echo '<a href="'.$curr_url.'/save" class="btn btn-primary text-white">'.$local->_($btn_name).'</a> ';
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <?=$this->partial("layout/partial/head");?>
+</head>
+<body>
+<?=$this->partial("layout/partial/sidebar");?>
+<?=$this->partial("layout/partial/sidebar_info");?>
+<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+    <?=$this->partial("layout/partial/header");?>
+    <div class="body flex-grow-1 px-3">
+        <div class="container-fluid" id="containerBox">
+            <?php
+            echo $this->partial('layout/component/notifications');
+            echo $this->getContent();
+            ?>
+        </div>
+    </div>
+    <?=$this->partial("layout/partial/footer");?>
+</div>
+<?=$this->partial("layout/partial/footer_js");?>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<script src="/assets/js/__/__/build/ckeditor.js"></script>
+<script>
+    let EditorConfigs = {
+        toolbar: {
+            items: [
+                'undo',
+                'redo',
+                '|',
+                'heading',
+                '|',
+                'alignment',
+                'bold',
+                'italic',
+                'underline',
+                'link',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'fontColor',
+                'fontSize',
+                'fontFamily',
+                '|',
+                'blockQuote',
+                'htmlEmbed',
+                '|',
+                'removeFormat'
+            ]
+        },
+        language: 'ru',
+        fontSize: {
+            options: [
+                9,
+                11,
+                13,
+                'default',
+                17,
+                19,
+                21
+            ]
+        },
+    };
+    let editors = [];
+    function createEditor(elementId) {
+        return ClassicEditor
+            .create( document.querySelector(elementId), EditorConfigs)
+            .then( editor => {
+                editors[ elementId ] = editor;
+                editor.setData(document.querySelector(elementId).value);
+            } )
+            .catch( err => console.error( err ) );
+    }
+</script>

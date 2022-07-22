@@ -1,0 +1,28 @@
+<div class="col-md-12">
+    <label class="form-label"><?=$local->_('label_active');?></label>
+    <div class="form-check form-switch form-switch-xl">
+        <?php
+        $activeText = 'active';
+        $activeChecked = 'checked';
+        if(!empty($data['id']) && $data['active'] === false)
+        {
+            $activeChecked = 'checked';
+            $activeText = 'hiden';
+        }
+        ?>
+        <input name="active" value="1" class="form-check-input" id="itemActive" <?=$activeChecked;?> type="checkbox">
+        <label id="itemActiveLabel" class="form-check-label" for="itemActive"><?=$local->_($activeText);?></label>
+    </div>
+</div>
+<script>
+    let label = document.querySelector('#itemActiveLabel');
+    let itemActive = document.querySelector('#itemActive');
+    itemActive.addEventListener('change', el => {
+        if(el.target.checked)
+        {
+            label.innerHTML = '<?=$local->_('active');?>';
+        } else {
+            label.innerHTML = '<?=$local->_('hiden');?>';
+        }
+    });
+</script>

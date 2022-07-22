@@ -1,0 +1,18 @@
+<?php
+if(!empty($rolesInit))
+{
+    // cil-soccer
+    echo '<div class="dropdown">';
+    echo '  <button class="me-2 btn btn-danger text-white" type="button" data-coreui-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+    echo '      <svg class="icon me-2"><use xlink:href="/assets/icons/sprites/free.svg#cil-soccer"></use></svg>';
+    echo '       Назначить роль';
+    echo '  </button>';
+    echo '  <div class="dropdown-menu dropdown-menu-end">';
+    foreach (new \ArrayIterator($rolesInit) as $role)
+    {
+        $url = implode('/', [$curr_url, 'roles', $role['id']]);
+        echo '<a href="'.$url.'" class="dropdown-item roles-item">'.$role['name'].'</a>';
+    }
+    echo '  </div>';
+    echo '</div>';
+}

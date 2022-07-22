@@ -1,0 +1,196 @@
+<?php
+$key_item = 1;
+?>
+<div class="d-flex">
+    <button class="btn btn-primary" id="add_modul_block" type="button">
+        <svg class="icon">
+            <use xlink:href="/assets/icons/sprites/free.svg#cil-plus"></use>
+        </svg> <?=$local->_('btn_add');?>
+    </button>
+</div>
+<ul class="list-group" id="mods_block_items">
+    <?php
+    if(!empty($data['modules']) && !is_null($data['modules']))
+    {
+        $getOption = function ($sel) use($local) {
+            $return = '';
+            foreach (new \ArrayIterator(['category','reviews','offers','community','brands','blogs','album','shops']) as $model)
+            {
+                $selected = '';
+                if($model==$sel)
+                {
+                    $selected = ' selected ';
+                }
+                $return .= '<option value="'.$model.'" '.$selected.'>'.$local->_($model).'</option>';
+            }
+            return $return;
+        };
+        $modules = json_decode($data['modules'], true);
+        foreach (new \ArrayIterator($modules) as $module)
+        {
+            $title = $module['title']['default'] ?? '';
+            $model = $module['model'] ?? '';
+            echo '<li class="list-group-item drop__items">';
+            echo '  <div class="card">';
+            echo '      <div class="card-body">';
+            echo '          <div class="d-flex justify-content-between">';
+            echo '              <label class="form-label">'.$local->_('label_models_title').'</label>';
+            echo '              <button class="btn btn-ghost-info del-mods" title="'.$local->_('label_models_del').'">';
+            echo '                  <svg class="icon"><use xlink:href="/assets/icons/sprites/free.svg#cil-x-circle"></use></svg>';
+            echo '              </button>';
+            echo '          </div>';
+            echo '          <div class="d-block">';
+            echo '              <input type="text" class="form-control" name="modules['.$key_item.'][title]" value="'.$title.'" />';
+            echo '              <label class="form-label">'.$local->_('label_models_module').'</label>';
+            echo '              <select class="form-select" name="modules['.$key_item.'][model]">';
+            echo                    $getOption($model);
+            echo '              </select>';
+            echo '              <div class="input-group">';
+            echo '                  <span class="input-group-text w-75">'.$local->_('label_models_limit').'</span>';
+            echo '                  <input type="number" min="-1" step="1" class="form-control" name="modules['.$key_item.'][limit]" value="'.$module['limit'].'" />';
+            echo '              </div>';
+            echo '              <div class="input-group">';
+            echo '                  <span class="input-group-text w-75">'.$local->_('label_models_positions').'</span>';
+            echo '                  <input type="number" min="0" step="1" class="form-control" name="modules['.$key_item.'][positions]" value="'.$module['positions'].'" />';
+            echo '              </div>';
+            echo '          </div>';
+
+            echo '      </div>';
+            echo '  </div>';
+            echo '</li>';
+            $key_item++;
+        }
+    }
+    ?>
+</ul>
+<script>
+    let mods_del_btn = document.querySelectorAll('.del-mods');
+    let mods_add_btn = document.querySelector('#add_modul_block');
+    let mods_lists = document.querySelector('#mods_block_items');
+
+    let key_item = '<?=$key_item;?>';
+    const delItem = e => {
+        e.currentTarget.closest('.drop__items').remove()
+    };
+
+    const reindexPosition = () => {
+        let mods_posit = document.querySelectorAll('.mods-posit input');
+        mods_posit.forEach((e,k) => {
+            e.value = k+1;
+        });
+    };
+
+    const taskInit = e => {
+        let drop__items = mods_lists.querySelectorAll('.drop__items');
+        for(const task of drop__items)
+        {
+            task.draggable = true;
+        }
+        mods_lists.addEventListener(`dragstart`, (e) => {
+            e.target.classList.add(`drop__selected`);
+        });
+
+        mods_lists.addEventListener(`dragend`, (e) => {
+            e.target.classList.remove(`drop__selected`);
+        });
+        const getNextElement = (cursorPosition, currentElement) => {
+            const currentElementCoord = currentElement.getBoundingClientRect();
+            const currentElementCenter = currentElementCoord.y + currentElementCoord.height / 2;
+
+            const nextElement = (cursorPosition < currentElementCenter) ?
+                currentElement :
+                currentElement.nextElementSibling;
+
+            return nextElement;
+        };
+        mods_lists.addEventListener(`dragover`, (e) => {
+            e.preventDefault();
+
+            const activeElement = mods_lists.querySelector(`.drop__selected`);
+            const currentElement = e.target;
+            const isMoveable = activeElement !== currentElement &&
+                currentElement.classList.contains(`drop__items`);
+
+            if (!isMoveable) {
+                return;
+            }
+
+            const nextElement = getNextElement(e.clientY, currentElement);
+
+            if (
+                nextElement &&
+                activeElement === nextElement.previousElementSibling ||
+                activeElement === nextElement
+            ) {
+                return;
+            }
+
+            mods_lists.insertBefore(activeElement, nextElement);
+            reindexPosition();
+        });
+    };
+
+    const listenerInit = () => {
+        let btnDelSection = document.querySelectorAll('.del-mods');
+        btnDelSection.forEach(el => {
+            el.removeEventListener('click', delItem)
+            el.addEventListener('click', delItem)
+        });
+    }
+    const addBlockItem = () => {
+        let modOptions = new Map([
+            ['category','<?=$local->_('category');?>'],
+            ['reviews','<?=$local->_('reviews');?>'],
+            ['offers','<?=$local->_('offers');?>'],
+            ['community','<?=$local->_('community');?>'],
+            ['brands','<?=$local->_('brands');?>'],
+            ['blogs','<?=$local->_('blogs');?>'],
+            ['album','<?=$local->_('album');?>'],
+            ['shops','<?=$local->_('shops');?>']
+        ]);
+        let modOption = '';
+        modOptions.forEach((val, key) => {
+            modOption += `<option value="${key}">${val}</option>`;
+        });
+        let htmlEl = `
+            <li class="list-group-item drop__items">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label"><?=$local->_('label_models_title');?></label>
+                            <button class="btn btn-ghost-info del-mods" title="<?=$local->_('label_models_del');?>">
+                                <svg class="icon">
+                                    <use xlink:href="/assets/icons/sprites/free.svg#cil-x-circle"></use>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="d-block">
+                            <input type="text" class="form-control" name="modules[${key_item}][title]" />
+                            <label class="form-label"><?=$local->_('label_models_module');?></label>
+                            <select class="form-select" name="modules[${key_item}][model]">
+                                ${modOption}
+                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text w-75"><?=$local->_('label_models_limit');?></span>
+                                <input type="number" min="-1" step="1" class="form-control" name="modules[${key_item}][limit]" value="10" />
+                            </div>
+                            <div class="input-group mods-posit">
+                                <span class="input-group-text w-75"><?=$local->_('label_models_positions');?></span>
+                                <input type="number" min="0" step="1" class="form-control" name="modules[${key_item}][positions]" value="${key_item}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        `;
+        mods_lists.insertAdjacentHTML('beforeend', htmlEl);
+        key_item++;
+    };
+    mods_add_btn.addEventListener('click', e => {
+        addBlockItem();
+        listenerInit();
+        taskInit();
+    });
+    taskInit();
+    listenerInit();
+</script>

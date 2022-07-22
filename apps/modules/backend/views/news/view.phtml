@@ -1,0 +1,43 @@
+<?php
+echo $this->partial('layout/component/itemDropdown');
+echo $this->partial('layout/component/modules_nav_header');
+?>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <?php
+            if(!empty($data->total_count) && $data->total_count > 0)
+            {
+                $date_title = $local->_('label_date_create');
+                echo '<table class="table table-hover mb-0 w-100">';
+                echo '  <tbody>';
+                foreach ($data->items as $item)
+                {
+                    $item_active = $item['active'] ? '' : 'table-danger';
+                    echo '<tr class="align-middle '.$item_active.'">';
+                    echo '  <td><input type="checkbox" class="form-check-input mt-2 itemCheck" name="items[]" value="'.$item['id'].'" /></td>';
+                    echo '  <td>';
+                    if(!empty($item['picture']) && !is_null($item['picture']))
+                    {
+                        echo '<picture class="rounded float-start">';
+                        echo '  <source srcset="'.$item['picture'].'.webp" />';
+                        echo '  <img src="'.$item['picture'].'.jpg" class="prev_picture" />';
+                        echo '</picture>';
+                    }
+                    echo '  </td>';
+                    echo '  <td class="w-100">';
+                    echo '    <h4 class="card-subtitle  mb-3">'.$item['name'].'</h4>';
+                    echo '    <div class="card-text mb-2">'.$item['anons'].'</div>';
+                    echo '    <div class="card-subtitle mb-2 text-muted">'.$date_title.' '.$item['date_create'].'</div>';
+                    echo '  </td>';
+                    echo '  <td>'.$initDropdown($item['id']).'</td>';
+                    echo '</tr>';
+                }
+                echo '  </tbody>';
+                echo '</table>';
+            }
+            ?>
+        </div>
+        <div><?=$this->partial("layout/component/paginate");?></div>
+    </div>
+</div>

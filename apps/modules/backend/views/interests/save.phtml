@@ -1,0 +1,28 @@
+<?php
+echo $this->partial('layout/component/modules_nav_header');
+
+
+?>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <form action="<?=$curr_url;?>/save" method="post" enctype="multipart/form-data" id="editForm" class="row g-3">
+                <input type="hidden" name="id" value="<?=$data['id'] ?? ''; ?>">
+                <div class="col-md-9">
+                    <?=$this->partial("layout/box/lang_name");?>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label"><?=$local->_('label_position');?></label>
+                            <input class="form-control" name="position" type="number" min="0" step="1" value="<?=$data['position'] ?? '0';?>">
+                        </div>
+                        <div class="col-12">
+                            <?=$this->partial("layout/component/pictureBox");?>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
